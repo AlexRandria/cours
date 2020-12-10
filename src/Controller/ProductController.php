@@ -21,6 +21,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
     /**
+     * @Route("/detailProduit/{id}", name="detailProduit")
+     */
+    public function index(ProductRepository $productRepository): Response
+    {
+
+        $listeProduit = $productRepository->findAll();
+
+        return $this->render('product/index.html.twig', [
+            'listeProduit' => $listeProduit,
+        ]);
+    }
+
+
+
+    /**
      * @Route("/product/add",name="ajoutProduit")
      */
     public function addProduct(Request $request, EntityManagerInterface $em): Response
@@ -62,8 +77,20 @@ class ProductController extends AbstractController
 
             return $this->redirectToRoute('success');
         }
+
         return $this->render('product/index.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/product/detail/{id}",name="detailProduit")
+     */
+    public function detail(EntityManagerInterface $em, $id) 
+    {
+        $product = $em->getRepository(Product::class)->find($id);
+        return $this->render('product/detail.html.twig', [
+            'produit' => $product,
         ]);
     }
 }
