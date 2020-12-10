@@ -21,14 +21,18 @@
     <table class="table">
         <tr>
             <th>Nom</th>
-            <th>Price</th>
+            <th>Prix</th>
             <th>Category</th>
+            <th>Editer</th>
         </tr>
         {% for product in listeProduct %}
         <tr>
-            <td>{{product.name}}</td>
+            <td>{{product.Category.name}} {{product.name}}</td>
             <td>{{product.price}}€</td>
             <td>{{product.Category.name}}</td>
+            <td><a href="{{path('editProduct',{'id':product.id})}}">
+                Editer produit</a>
+            </td>
         </tr>
         {% endfor  %}
     </table>
