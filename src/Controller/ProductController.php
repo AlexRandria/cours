@@ -110,7 +110,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/product/detail/{id}",name="detailProduit")
+     * @Route("/product/detail/{id}",name="detailProduct")
      */
     public function detail(EntityManagerInterface $em, $id) 
     {
@@ -118,5 +118,15 @@ class ProductController extends AbstractController
         return $this->render('product/detail.html.twig', [
             'produit' => $product,
         ]);
+    }
+
+    /**
+     * @Route("/product/remove/{id}",name="removeProduct")
+     */
+    public function removeProduit(EntityManagerInterface $em, $id){
+        $product = $em->getRepository(Product::class)->find($id);
+        $em->remove($product);
+        $em->flush();
+        return $this->render('success.html.twig');
     }
 }

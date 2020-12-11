@@ -22,17 +22,15 @@
         <tr>
             <th>Nom</th>
             <th>Prix</th>
-            <th>Category</th>
             <th>Editer</th>
+            <th>Effacer</th>
         </tr>
         {% for product in listeProduct %}
         <tr>
-            <td>{{product.Category.name}} {{product.name}}</td>
+            <td><a href="{{path('detailProduct',{'id':product.id})}}">{{product.name}}</a></td>
             <td>{{product.price}}€</td>
-            <td>{{product.Category.name}}</td>
-            <td><a href="{{path('editProduct',{'id':product.id})}}">
-                Editer produit</a>
-            </td>
+            <td><a href="{{path('editProduct',{'id':product.id})}}">Editer produit</a></td>
+            <td><a href="{{path('removeProduct',{'id':product.id})}}">Supprimer produit</a></td>
         </tr>
         {% endfor  %}
     </table>
