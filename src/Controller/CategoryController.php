@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
 use App\Entity\Category;
 use App\Form\CategoryFormType;
 use App\Repository\ProductRepository;
@@ -13,28 +12,46 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/admin",name="admin_")
+ */
 class CategoryController extends AbstractController
 {
     /**
+     * Liste des catégorie du site
      * @Route("/category", name="category")
      */
     public function index(CategoryRepository $categoryRepository): Response
     {
-
         $listeCategory = $categoryRepository->findAll();
-
         return $this->render('category/index.html.twig', [
             'listeCategory' => $listeCategory,
         ]);
     }
 
 
+    /**
+     * @Route("/category/product/{id}", name="categoryProduct")
+     * liste les produits d'une catégorie donnée
+     */
+    public function productByCategory(ProductRepository $productRepository, $id): Response
+    {
+
+        $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
+
+        $listeProduit = $productRepository->findBy(['Category' => $category]);
+
+        return $this->render('category/categoryProducts.html.twig', [
+            'listeProduit' => $listeProduit,
+        ]);
+    }
 
     /**
      * @Route("/category/add",name="ajoutCategory")
      */
     public function addCategory(Request $request, EntityManagerInterface $em)
     {
+
         $category = new Category;
         $form = $this->createForm(CategoryFormType::class, $category);
 
@@ -45,7 +62,9 @@ class CategoryController extends AbstractController
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('success');
+            $this->addFlash('success', 'Catégorie ajoutée avec succès');
+
+            return $this->redirectToRoute('category');
         }
 
 
@@ -57,6 +76,7 @@ class CategoryController extends AbstractController
      */
     public function editCategory(Request $request, EntityManagerInterface $em, $id)
     {
+
         $category = $em->getRepository(Category::class)->find($id);
         $form = $this->createForm(CategoryFormType::class, $category);
 
@@ -74,23 +94,14 @@ class CategoryController extends AbstractController
         return $this->render('category/edit.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/category/{id}/all",name="productCat")
-     */
-    public function productCategory(ProductRepository $productRepository, $id){
-        $products = $productRepository->findByCategory($id);
-        return $this->render('category/product.html.twig', [
-            'listeProduct' => $products,
-        ]);
-    }
 
     /**
-     * @Route("/category/remove/{id}",name="removeCat")
+     * @Route("/category/queryBuilderJoin/{id}",name="qbJoinCategory")
      */
-    public function removeCategory(EntityManagerInterface $em, $id){
-        $category = $em->getRepository(Category::class)->find($id);
-        $em->remove($category);
-        $em->flush();
-        return $this->render('success.html.twig');
+    public function qbJoinCategory(Request $request, EntityManagerInterface $em, $id)
+    {
+
+        $category = $em->getRepository(Category::class)->findInnerJoin($id);
+        dd($category);
     }
 }
