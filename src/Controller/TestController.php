@@ -13,14 +13,6 @@ class TestController extends AbstractController
 {
 
     /**
-     * @Route("/",name="index")
-     *  */
-    public function index()
-    {
-        return $this->render('base.html.twig');
-    }
-
-    /**
      * @Route("/test",name="test")
      *  */
     public function test(ProductRepository $productRepository)
