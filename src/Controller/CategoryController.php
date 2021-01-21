@@ -64,7 +64,7 @@ class CategoryController extends AbstractController
 
             $this->addFlash('success', 'Catégorie ajoutée avec succès');
 
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('admin_category');
         }
 
 
@@ -94,6 +94,18 @@ class CategoryController extends AbstractController
         return $this->render('category/edit.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/category/remove/{id}",name="removeCat")
+     */
+    public function removeCategory(Category $category, EntityManagerInterface $em, $id)
+    {
+        $em->remove($category);
+        $em->flush();
+
+        $this->addFlash('success', 'Catégorie supprimée avec succès');
+        
+        return $this->redirectToRoute('admin_category');
+    }
 
     /**
      * @Route("/category/queryBuilderJoin/{id}",name="qbJoinCategory")

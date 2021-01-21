@@ -6,6 +6,8 @@
 parameters:
     locale: 'fr'
     app.dir.public: '%kernel.project_dir%/public/'
+    stripe_public_key: pk_test_51I7McdJRZHZ9LFluN3dyQzI8Lb0OJoMWerH7gOu5wuQkjM8iO5CG8OnuEuPofqq3m1z5sjeogDqX0dywaZLh3MxF00FUYTuFdT
+    stripe_secret_key: sk_test_51I7McdJRZHZ9LFluMUT17SFPXwsILkBO8qFnhugh6eoAvi9qdcgk1R4QzZ8UWj3TzgNIGvyThgg7OJv7dQPL8VfW00YrhrGdxs
     
 services:
     # default configuration for services in *this* file

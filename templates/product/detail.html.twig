@@ -13,8 +13,11 @@
                 <div class="card-body">
                     <h5 class="card-title">{{product.name}}</h5>
                     <p class="card-text">{{product.price}}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
+                {% if is_granted('ROLE_STAFF') %}
+                    <a href="{{path('admin_editProduct',{'id':product.id}) }}" class="btn btn-primary">Editer</a>
+                {% endif %}
+                <a href="{{path('addToCart',{'id':product.id}) }}" class="btn btn-primary">Ajouter</a>
             </div>
 
         </div>

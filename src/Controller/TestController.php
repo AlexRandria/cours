@@ -25,11 +25,4 @@ class TestController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/success",name="success")
-     *  */
-    public function success()
-    {
-        return $this->render('success.html.twig');
-    }
 }

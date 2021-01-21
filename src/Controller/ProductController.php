@@ -92,7 +92,7 @@ class ProductController extends AbstractController
         $path = $this->getParameter('app.dir.public') . '/img';
         $product = $em->getRepository(Product::class)->find($id);
         $form = $this->createForm(ProductFormType::class, $product);
-
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,12 +114,10 @@ class ProductController extends AbstractController
                     echo $e->getMessage();
                 }
             }
-
-
-
             $em->persist($product);
             $em->flush();
-            return $this->redirectToRoute('success');
+            $this->addFlash('success','Le produit a bien été modifier');
+            return $this->redirectToRoute('admin_detailProduct', ['id'=>$id]);
         }
 
         return $this->render('product/edit.html.twig', [

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Product;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use App\Form\DataTransformer\centimeTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
@@ -23,6 +24,7 @@ class ProductFormType extends AbstractType
             ->add('price', IntegerType::class)
             ->add('slug', TextType::class)
             ->add('img', FileType::class, [
+                'data_class' => null,
                 'required' => false,
                 'label' => 'Image produit',
                 'attr' => [
@@ -55,6 +57,8 @@ class ProductFormType extends AbstractType
                 SubmitType::class,
                 ['label' => 'Ajouter Produit']
             );
+
+        $builder->get('price')->addModelTransformer(new centimeTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

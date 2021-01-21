@@ -35,9 +35,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-
-
-
     /**
      * @Route("/success",name="success")
      *  */
